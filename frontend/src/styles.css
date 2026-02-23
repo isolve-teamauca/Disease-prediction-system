@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-soft border border-slate-100;
+}
+
+/* nicer horizontal scroll for top nav on small screens */
+nav::-webkit-scrollbar {
+  height: 8px;
+}
+nav::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-medium transition;
+}
+
+.btn-primary {
+  @apply btn bg-slate-900 text-white hover:bg-slate-800;
+}
+
+.btn-ghost {
+  @apply btn bg-white text-slate-900 border border-slate-200 hover:bg-slate-50;
+}
+
+.input {
+  @apply w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-300;
+}
+
+.select {
+  @apply input pr-10;
+}
+
