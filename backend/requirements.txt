@@ -14,5 +14,8 @@ joblib>=1.3,<2.0
 scikit-learn>=1.3,<2.0
 pandas>=2.0,<3.0
 
-# Production (optional)
-gunicorn>=21.0,<23.0
+# Production (Render, etc.)
+gunicorn
+dj-database-url
+django-cors-headers
+whitenoise

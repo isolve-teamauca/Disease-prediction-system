@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MedPredict — Disease Risk Prediction System
 
 ## Creating an admin user
@@ -14,3 +15,6 @@ u.save()
 ```
 
 Then sign in with `admin@medpredict.com` / `admin123` (or the username `admin` and that password) to be redirected to the Admin Dashboard.
+=======
+# Disease-prediction-system
+>>>>>>> d52d423b4591f1ca4abbc0122b69c5c7e809028d

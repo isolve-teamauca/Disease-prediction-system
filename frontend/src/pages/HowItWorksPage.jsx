@@ -31,7 +31,7 @@ const DISEASES = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen page-gradient-bg">
+    <div className="min-h-screen bg-white">
       <TopNav />
       <main className="p-6 max-w-4xl mx-auto">
         <h1 className="font-heading text-3xl font-bold text-content mb-2">How MedPredict Works</h1>
@@ -39,7 +39,7 @@ export default function HowItWorksPage() {
 
         <section className="mb-10">
           <h2 className="font-heading text-xl font-semibold text-content mb-3">What MedPredict Does</h2>
-          <div className="bg-light/95 rounded-2xl shadow-card p-6 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-content leading-relaxed">
               MedPredict is a data-driven disease risk assessment system that helps patients and healthcare providers
               understand the likelihood of developing certain conditions. You enter clinical and lifestyle information
@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
             {DISEASES.map(({ slug, name, description, icon: Icon }) => (
               <div
                 key={slug}
-                className="bg-light/95 rounded-2xl shadow-card p-5 border border-secondary/40 flex gap-4"
+                className="bg-white rounded-2xl shadow-card p-5 border border-gray-100 flex gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <Icon className="w-6 h-6 text-primary" />
@@ -72,7 +72,7 @@ export default function HowItWorksPage() {
 
         <section className="mb-10">
           <h2 className="font-heading text-xl font-semibold text-content mb-3">How the ML Model Works</h2>
-          <div className="bg-light/95 rounded-2xl shadow-card p-6 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-gray-700 leading-relaxed mb-4">
               MedPredict uses machine learning models trained on real medical datasets. Each disease has its own
               model built with a <strong>Random Forest classifier</strong>—an approach that combines many
@@ -107,7 +107,7 @@ export default function HowItWorksPage() {
             <Lock className="w-5 h-5 text-primary" />
             Data Privacy
           </h2>
-          <div className="bg-light/95 rounded-2xl shadow-card p-6 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-content leading-relaxed">
               Patient data is stored securely and only accessible by authorized health providers. Predictions and
               patient information are used solely to support care within the MedPredict system and are not
