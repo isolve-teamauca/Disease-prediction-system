@@ -3,12 +3,12 @@ import * as THREE from 'three';
 
 // MedPredict health-themed background: medical cross particles (+) and ECG-style heartbeat line
 const BG_COLOR = 0x1a0a08;
-const PARTICLE_OPACITY = 0.4;
+const PARTICLE_OPACITY = 0.85;
 const MAX_PARTICLES = 60;
 const DRIFT_SPEED = 0.2;
-const PARTICLE_SIZE = 8;
-const ECG_COLOR = 0x6f1d1b;
-const ECG_AMPLITUDE = 12;
+const PARTICLE_SIZE = 11;
+const ECG_COLOR = 0xc53030;
+const ECG_AMPLITUDE = 18;
 const ECG_SEGMENTS = 120;
 
 function makeCrossTexture(THREE, size = 32) {
@@ -18,7 +18,7 @@ function makeCrossTexture(THREE, size = 32) {
   const ctx = c.getContext('2d');
   const w = Math.max(2, size / 8);
   const cx = size / 2;
-  ctx.fillStyle = `rgba(187, 148, 87, ${PARTICLE_OPACITY})`;
+  ctx.fillStyle = `rgba(232, 197, 71, ${PARTICLE_OPACITY})`;
   ctx.fillRect(cx - w / 2, 0, w, size);
   ctx.fillRect(0, cx - w / 2, size, w);
   const t = new THREE.CanvasTexture(c);
@@ -90,7 +90,7 @@ export default function ParticleBackground() {
         color: ECG_COLOR,
         linewidth: 1,
         transparent: true,
-        opacity: 0.8,
+        opacity: 1,
       });
       ecgLine = new THREE.Line(ecgGeo, ecgMat);
       scene.add(ecgLine);

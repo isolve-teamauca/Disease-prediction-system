@@ -103,11 +103,11 @@ export default function ProviderDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto">
-        <h1 className="font-heading text-2xl font-bold text-content mb-1">Health Provider Dashboard</h1>
-        <p className="text-gray-500 text-sm mb-6">Enter the patient&apos;s code (they can find it on their dashboard) to view their prediction history</p>
+        <h1 className="font-heading text-2xl font-bold text-white mb-1">Health Provider Dashboard</h1>
+        <p className="text-gray-300 text-sm mb-6">Enter the patient&apos;s code (they can find it on their dashboard) to view their prediction history</p>
 
         <form onSubmit={handleSearch} className="max-w-xl mb-6">
           <div className="relative">

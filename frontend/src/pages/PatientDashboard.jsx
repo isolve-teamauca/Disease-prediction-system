@@ -77,13 +77,13 @@ export default function PatientDashboard() {
   const hasHistoryChart = historyChartData.length > 0;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto">
-        <h1 className="font-heading text-2xl font-bold text-content mb-1">
+        <h1 className="font-heading text-2xl font-bold text-white mb-1">
           Welcome, {user?.full_name || user?.email || 'Patient'}
         </h1>
-        <p className="text-gray-500 text-sm mb-6">Track your health and run risk assessments</p>
+        <p className="text-gray-300 text-sm mb-6">Track your health and run risk assessments</p>
 
         {patientCode != null && (
           <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6 flex flex-wrap items-center justify-between gap-4">

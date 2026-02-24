@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import MedPredictLogo from '../components/MedPredictLogo';
 import RoleToggle from '../components/RoleToggle';
 import InputField from '../components/InputField';
-import ParticleBackground from '../components/ParticleBackground';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
@@ -38,7 +37,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
-      <ParticleBackground />
       <div className="w-full max-w-md relative z-0">
         <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">
           <div className="flex flex-col items-center text-center mb-6">

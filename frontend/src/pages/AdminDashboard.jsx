@@ -60,7 +60,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen relative flex items-center justify-center">
         <Spinner className="h-10 w-10 border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
 
   if (error || !stats) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen relative">
         <TopNav />
         <main className="p-6 max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
@@ -101,11 +101,11 @@ export default function AdminDashboard() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto">
-        <h1 className="font-heading text-2xl font-bold text-content mb-1">Admin Dashboard</h1>
-        <p className="text-gray-500 text-sm mb-6">System-wide statistics and recent activity</p>
+        <h1 className="font-heading text-2xl font-bold text-white mb-1">Admin Dashboard</h1>
+        <p className="text-gray-300 text-sm mb-6">System-wide statistics and recent activity</p>
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

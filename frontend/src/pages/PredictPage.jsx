@@ -176,7 +176,7 @@ export default function PredictPage() {
 
   if (!config) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen relative">
         <TopNav />
         <main className="p-6 max-w-6xl mx-auto">
           <p className="text-gray-500">Unknown disease. Choose: heart, diabetes, hypertension, stroke.</p>
@@ -282,13 +282,13 @@ export default function PredictPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto overflow-auto">
-        <h1 className="font-heading text-2xl font-bold text-content mb-6">{title}</h1>
+        <h1 className="font-heading text-2xl font-bold text-white mb-6">{title}</h1>
 
         {user?.role === 'provider' && verifiedPatient && (
-          <p className="mb-4 text-sm font-medium text-content">
+          <p className="mb-4 text-sm font-medium text-gray-300">
             Predicting for: <span className="text-primary">{verifiedPatient.full_name}</span> (Patient ID: {verifiedPatient.id})
           </p>
         )}

@@ -23,11 +23,11 @@ export default function PredictionHistoryPage() {
   const slice = filtered.slice(currentPage * PER_PAGE, (currentPage + 1) * PER_PAGE);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto">
-        <h1 className="font-heading text-2xl font-bold text-content mb-1">Prediction History</h1>
-        <p className="text-gray-500 text-sm mb-6">All your risk assessments</p>
+        <h1 className="font-heading text-2xl font-bold text-white mb-1">Prediction History</h1>
+        <p className="text-gray-300 text-sm mb-6">All your risk assessments</p>
 
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <label className="flex items-center gap-2">
