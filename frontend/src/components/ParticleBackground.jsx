@@ -1,11 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 const CDN_THREE = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-const PARTICLE_COLOR = 0xBB9457;
-const PARTICLE_OPACITY = 0.3;
-const MAX_PARTICLES = 80;
-const DRIFT_SPEED = 0.15;
+const BG_COLOR = 0x1a0a08;
+const PARTICLE_OPACITY = 0.4;
+const MAX_PARTICLES = 60;
+const DRIFT_SPEED = 0.2;
 const PARTICLE_SIZE = 8;
+const ECG_COLOR = 0x6f1d1b;
+const ECG_AMPLITUDE = 12;
+const ECG_SEGMENTS = 120;
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -19,20 +22,6 @@ function loadScript(src) {
     s.onerror = reject;
     document.head.appendChild(s);
   });
-}
-
-function makeCircleTexture(size = 32) {
-  const c = document.createElement('canvas');
-  c.width = size;
-  c.height = size;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = `rgba(187, 148, 87, ${PARTICLE_OPACITY})`;
-  ctx.beginPath();
-  ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);
-  ctx.fill();
-  const t = new window.THREE.CanvasTexture(c);
-  t.needsUpdate = true;
-  return t;
 }
 
 function makeCrossTexture(size = 32) {
@@ -56,9 +45,10 @@ export default function ParticleBackground() {
   useEffect(() => {
     let THREE;
     let scene, camera, renderer;
-    let circlePoints, crossPoints;
-    let circlePositions, crossPositions;
+    let crossPoints, crossPositions;
+    let ecgLine, ecgPositions;
     let animationId;
+    let startTime = Date.now();
     let width = typeof window !== 'undefined' ? window.innerWidth : 800;
     let height = typeof window !== 'undefined' ? window.innerHeight : 600;
 
@@ -67,38 +57,18 @@ export default function ParticleBackground() {
       camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, -10, 10);
       camera.position.z = 5;
 
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+      renderer = new THREE.WebGLRenderer({ alpha: false, antialias: false });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0);
+      renderer.setClearColor(BG_COLOR, 1);
       if (containerRef.current) {
         containerRef.current.appendChild(renderer.domElement);
       }
 
-      const circleGeo = new THREE.BufferGeometry();
-      const circlePos = new Float32Array((MAX_PARTICLES / 2) * 3);
-      for (let i = 0; i < MAX_PARTICLES / 2; i++) {
-        circlePos[i * 3] = (Math.random() - 0.5) * width;
-        circlePos[i * 3 + 1] = (Math.random() - 0.5) * height;
-        circlePos[i * 3 + 2] = 0;
-      }
-      circleGeo.setAttribute('position', new THREE.BufferAttribute(circlePos, 3));
-      circlePositions = circleGeo.attributes.position.array;
-
-      const circleMat = new THREE.PointsMaterial({
-        size: PARTICLE_SIZE,
-        map: makeCircleTexture(),
-        transparent: true,
-        opacity: 1,
-        depthWrite: false,
-        sizeAttenuation: true,
-      });
-      circlePoints = new THREE.Points(circleGeo, circleMat);
-      scene.add(circlePoints);
-
+      // Cross particles
       const crossGeo = new THREE.BufferGeometry();
-      const crossPos = new Float32Array((MAX_PARTICLES / 2) * 3);
-      for (let i = 0; i < MAX_PARTICLES / 2; i++) {
+      const crossPos = new Float32Array(MAX_PARTICLES * 3);
+      for (let i = 0; i < MAX_PARTICLES; i++) {
         crossPos[i * 3] = (Math.random() - 0.5) * width;
         crossPos[i * 3 + 1] = (Math.random() - 0.5) * height;
         crossPos[i * 3 + 2] = 0;
@@ -116,24 +86,49 @@ export default function ParticleBackground() {
       });
       crossPoints = new THREE.Points(crossGeo, crossMat);
       scene.add(crossPoints);
+
+      // ECG / heartbeat line (sine wave across middle)
+      const ecgGeo = new THREE.BufferGeometry();
+      const ecgPos = new Float32Array((ECG_SEGMENTS + 1) * 3);
+      ecgGeo.setAttribute('position', new THREE.BufferAttribute(ecgPos, 3));
+      ecgPositions = ecgGeo.attributes.position.array;
+
+      const ecgMat = new THREE.LineBasicMaterial({
+        color: ECG_COLOR,
+        linewidth: 1,
+        transparent: true,
+        opacity: 0.8,
+      });
+      ecgLine = new THREE.Line(ecgGeo, ecgMat);
+      scene.add(ecgLine);
     }
 
     function animate() {
       animationId = requestAnimationFrame(animate);
       const halfH = height / 2;
       const halfW = width / 2;
+      const t = (Date.now() - startTime) * 0.001;
 
-      for (let i = 0; i < (MAX_PARTICLES / 2) * 3; i += 3) {
-        circlePositions[i + 1] += DRIFT_SPEED;
-        if (circlePositions[i + 1] > halfH + 50) circlePositions[i + 1] = -halfH - 50;
-      }
-      circlePoints.geometry.attributes.position.needsUpdate = true;
-
-      for (let i = 0; i < (MAX_PARTICLES / 2) * 3; i += 3) {
+      // Drift particles up; reset to bottom when past top
+      for (let i = 0; i < MAX_PARTICLES * 3; i += 3) {
         crossPositions[i + 1] += DRIFT_SPEED;
-        if (crossPositions[i + 1] > halfH + 50) crossPositions[i + 1] = -halfH - 50;
+        if (crossPositions[i + 1] > halfH + 50) {
+          crossPositions[i + 1] = -halfH - 50;
+          crossPositions[i] = (Math.random() - 0.5) * width;
+        }
       }
       crossPoints.geometry.attributes.position.needsUpdate = true;
+
+      // ECG sine wave along center (y = 0), pulsing over time
+      const amplitude = ECG_AMPLITUDE * (0.7 + 0.3 * Math.sin(t * 2));
+      for (let i = 0; i <= ECG_SEGMENTS; i++) {
+        const x = -halfW + (i / ECG_SEGMENTS) * width;
+        const y = amplitude * Math.sin((i / ECG_SEGMENTS) * Math.PI * 4 + t * 1.5);
+        ecgPositions[i * 3] = x;
+        ecgPositions[i * 3 + 1] = y;
+        ecgPositions[i * 3 + 2] = 0;
+      }
+      ecgLine.geometry.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
     }
@@ -161,13 +156,13 @@ export default function ParticleBackground() {
     return () => {
       window.removeEventListener('resize', onResize);
       if (animationId) cancelAnimationFrame(animationId);
-      if (circlePoints) {
-        circlePoints.geometry.dispose();
-        circlePoints.material.dispose();
-      }
       if (crossPoints) {
         crossPoints.geometry.dispose();
         crossPoints.material.dispose();
+      }
+      if (ecgLine) {
+        ecgLine.geometry.dispose();
+        ecgLine.material.dispose();
       }
       if (renderer && containerRef.current && renderer.domElement.parentNode === containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
