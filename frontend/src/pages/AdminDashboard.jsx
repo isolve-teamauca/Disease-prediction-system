@@ -28,6 +28,7 @@ const DISEASE_COLORS = [CHART_COLORS.primary, CHART_COLORS.secondary, '#DC2626',
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -35,8 +36,14 @@ export default function AdminDashboard() {
     let cancelled = false;
     (async () => {
       try {
-        const { data } = await api.get('/api/admin/stats/');
-        if (!cancelled) setStats(data);
+        const [statsRes, usersRes] = await Promise.all([
+          api.get('/api/admin/stats/'),
+          api.get('/api/admin/users/').catch(() => ({ data: [] })),
+        ]);
+        if (!cancelled) {
+          setStats(statsRes.data);
+          setUsers(Array.isArray(usersRes.data) ? usersRes.data : []);
+        }
       } catch (err) {
         if (!cancelled) {
           const msg = err.response?.data?.detail || err.response?.status === 403
@@ -203,9 +210,49 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent registrations table */}
+        {/* All registered users (patients, health providers, admins) */}
+        <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden mb-8">
+          <h2 className="font-heading font-semibold text-content p-6 pb-0 mb-3">All registered users</h2>
+          <p className="text-gray-500 text-sm px-6 mb-3">Patients, health providers, and admins in the system</p>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-content">Email</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-content">Full name</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-content">Username</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-content">Role</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-content">Date joined</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-gray-500 text-sm">
+                      No users yet
+                    </td>
+                  </tr>
+                ) : (
+                  users.map((u) => (
+                    <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4 text-sm text-content">{u.email || '–'}</td>
+                      <td className="py-3 px-4 text-sm text-content">{u.full_name || '–'}</td>
+                      <td className="py-3 px-4 text-sm text-content font-medium">{u.username}</td>
+                      <td className="py-3 px-4 text-sm text-content capitalize">{u.role}</td>
+                      <td className="py-3 px-4 text-sm text-gray-600">
+                        {u.date_joined ? new Date(u.date_joined).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '–'}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Recent registrations (last 10) */}
         <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-          <h2 className="font-heading font-semibold text-content p-6 pb-0 mb-3">Recent registrations</h2>
+          <h2 className="font-heading font-semibold text-content p-6 pb-0 mb-3">Recent registrations (last 10)</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

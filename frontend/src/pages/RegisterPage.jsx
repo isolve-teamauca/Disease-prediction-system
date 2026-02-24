@@ -87,6 +87,7 @@ export default function RegisterPage() {
             <MedPredictLogo className="w-16 h-16 mb-4" />
             <h1 className="font-heading text-2xl font-bold text-primary">Create Your Account</h1>
             <p className="text-gray-500 text-sm mt-1">Join MedPredict for AI-powered health insights</p>
+            <p className="text-gray-500 text-xs mt-2">Admin accounts are not created here. Sign in on the Login page with <strong>Admin</strong> selected if you have admin credentials.</p>
           </div>
 
           {step === 1 ? (

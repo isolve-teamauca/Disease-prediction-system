@@ -90,3 +90,31 @@ def admin_stats(request):
             "daily_predictions": daily_predictions,
         }
     )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def admin_users(request):
+    """
+    GET /api/admin/users/
+    Returns all registered users (patients, providers, admins) for admin dashboard.
+    Only role='admin' may access; 403 otherwise.
+    """
+    if getattr(request.user, "role", None) != "admin":
+        return Response(
+            {"detail": "Admin access required."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+    users = User.objects.all().order_by("-date_joined")
+    data = [
+        {
+            "id": u.id,
+            "username": u.username,
+            "email": u.email or "",
+            "full_name": u.full_name or "",
+            "role": u.role,
+            "date_joined": u.date_joined.isoformat() if u.date_joined else None,
+        }
+        for u in users
+    ]
+    return Response(data)

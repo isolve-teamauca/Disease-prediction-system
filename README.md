@@ -1,9 +1,10 @@
-<<<<<<< HEAD
 # MedPredict — Disease Risk Prediction System
 
 ## Creating an admin user
 
-To create a user with the **admin** role (for access to the Admin Dashboard at `/admin-dashboard` and the stats API at `GET /api/admin/stats/`), run the following from the **backend** directory (where `manage.py` lives):
+Admin accounts **cannot** be created from the registration page. They are created from the **backend** (Django shell).
+
+From the **backend** directory (where `manage.py` is), run:
 
 ```bash
 python manage.py shell -c "
@@ -14,7 +15,19 @@ u.save()
 "
 ```
 
-Then sign in with `admin@medpredict.com` / `admin123` (or the username `admin` and that password) to be redirected to the Admin Dashboard.
-=======
-# Disease-prediction-system
->>>>>>> d52d423b4591f1ca4abbc0122b69c5c7e809028d
+**Sign in:** On the **Login** page, choose **Admin**, then use the **exact same email** you used in the command below (and password `admin123`). The email is case-sensitive.
+
+- Example: if you used `admin@medpredict.com` in the command, sign in with **admin@medpredict.com** (not `admin@predict.com`).
+
+To use a different email (e.g. `admin@predict.com`), use it in the command:
+
+```bash
+python manage.py shell -c "
+from apps.accounts.models import User
+u = User.objects.create_superuser('admin', 'admin@predict.com', 'admin123')
+u.role = 'admin'
+u.save()
+"
+```
+
+Then sign in with that email and `admin123`.
