@@ -35,7 +35,7 @@ export default function HowItWorksPage() {
       <TopNav />
       <main className="p-6 max-w-4xl mx-auto">
         <h1 className="font-heading text-3xl font-bold text-content mb-2">How MedPredict Works</h1>
-        <p className="text-content/80 text-sm mb-8">Understanding our disease risk assessment tool</p>
+        <p className="text-gray-600 text-sm mb-8">Understanding our disease risk assessment tool</p>
 
         <section className="mb-10">
           <h2 className="font-heading text-xl font-semibold text-content mb-3">What MedPredict Does</h2>
@@ -63,7 +63,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-content mb-1">{name}</h3>
-                  <p className="text-sm text-content/80 leading-relaxed">{description}</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
                 </div>
               </div>
             ))}
@@ -119,7 +119,7 @@ export default function HowItWorksPage() {
         <div className="flex justify-center pt-4">
           <Link
             to="/login"
-            className="bg-primary text-light px-6 py-3 rounded-xl font-medium hover:opacity-90 transition-opacity"
+            className="bg-primary text-white px-6 py-3 rounded-xl font-medium hover:opacity-90 transition-opacity"
           >
             Sign in to MedPredict
           </Link>

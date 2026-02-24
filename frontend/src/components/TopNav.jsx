@@ -33,11 +33,11 @@ export default function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-dark border-b border-secondary/30 shadow-nav">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-nav">
       <div className="flex items-center justify-between h-14 px-4 max-w-7xl mx-auto">
         <NavLink to={user ? (isAdmin ? '/admin-dashboard' : isPatient ? '/dashboard/patient' : '/dashboard/provider') : '/how-it-works'} className="flex items-center gap-2 shrink-0">
-          <MedPredictLogo className="w-9 h-9" color="#FFE6A7" />
-          <span className="font-heading font-bold text-light">MedPredict</span>
+          <MedPredictLogo className="w-9 h-9" />
+          <span className="font-heading font-bold text-content">MedPredict</span>
         </NavLink>
 
         <nav className="flex items-center gap-1">
@@ -46,10 +46,10 @@ export default function TopNav() {
               key={to + label}
               to={to}
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                `flex items-center gap-2 px-4 py-2 text-sm font-medium text-content border-b-2 -mb-px transition-colors ${
                   isActive
-                    ? 'border-secondary text-secondary'
-                    : 'border-transparent text-light/90 hover:text-secondary hover:border-secondary/50'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent hover:text-primary/80 hover:border-gray-300'
                 }`
               }
             >
@@ -62,11 +62,11 @@ export default function TopNav() {
         <div className="flex items-center gap-2 shrink-0">
           {user ? (
             <>
-              <span className="text-sm text-light/80 truncate max-w-[120px]">{user.email}</span>
+              <span className="text-sm text-gray-500 truncate max-w-[120px]">{user.email}</span>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-light hover:bg-secondary/20 hover:text-secondary transition-colors"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-content hover:bg-red-50 hover:text-primary transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -75,7 +75,7 @@ export default function TopNav() {
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-light hover:opacity-90"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white hover:opacity-90"
             >
               Login
             </Link>

@@ -35,7 +35,7 @@ export default function PredictionHistoryPage() {
             <select
               value={filter}
               onChange={(e) => { setFilter(e.target.value); setPage(0); }}
-              className="bg-input rounded-xl border border-secondary/50 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="bg-input rounded-xl border border-gray-200 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
               {DISEASE_OPTIONS.map((d) => (
                 <option key={d} value={d}>{d || 'All'}</option>
@@ -44,11 +44,11 @@ export default function PredictionHistoryPage() {
           </label>
         </div>
 
-        <div className="bg-light rounded-2xl shadow-card border border-secondary/40 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-secondary/50 bg-gray-50/50">
+                <tr className="border-b border-gray-200 bg-gray-50/50">
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Date</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Disease Type</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Risk Level</th>
@@ -62,7 +62,7 @@ export default function PredictionHistoryPage() {
                   <tr><td colSpan={4} className="py-8 text-center text-gray-500">No predictions yet</td></tr>
                 ) : (
                   slice.map((p) => (
-                    <tr key={p.id} className="border-b border-secondary/40 hover:bg-secondary/5">
+                    <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50/50">
                       <td className="py-3 px-4 text-sm text-gray-700">{new Date(p.created_at).toLocaleString()}</td>
                       <td className="py-3 px-4 text-sm font-medium capitalize">{String(p.disease_type).replace(/_/g, ' ')}</td>
                       <td className="py-3 px-4"><RiskBadge level={p.risk_level} /></td>
@@ -75,12 +75,12 @@ export default function PredictionHistoryPage() {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between py-3 px-4 border-t border-secondary/40">
-              <button type="button" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={currentPage === 0} className="px-3 py-1.5 rounded-lg border border-secondary/50 text-content text-sm disabled:opacity-50 hover:bg-secondary/10">
+            <div className="flex items-center justify-between py-3 px-4 border-t border-gray-100">
+              <button type="button" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={currentPage === 0} className="px-3 py-1.5 rounded-lg border border-gray-200 text-content text-sm disabled:opacity-50 hover:bg-gray-50">
                 Previous
               </button>
-              <span className="text-sm text-content/80">Page {currentPage + 1} of {totalPages}</span>
-              <button type="button" onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))} disabled={currentPage >= totalPages - 1} className="px-3 py-1.5 rounded-lg border border-secondary/50 text-content text-sm disabled:opacity-50 hover:bg-secondary/10">
+              <span className="text-sm text-gray-600">Page {currentPage + 1} of {totalPages}</span>
+              <button type="button" onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))} disabled={currentPage >= totalPages - 1} className="px-3 py-1.5 rounded-lg border border-gray-200 text-content text-sm disabled:opacity-50 hover:bg-gray-50">
                 Next
               </button>
             </div>

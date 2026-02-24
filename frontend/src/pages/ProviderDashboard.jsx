@@ -119,24 +119,24 @@ export default function ProviderDashboard() {
               placeholder="Enter patient code"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full bg-input rounded-xl border border-secondary/50 py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full bg-input rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
-            <button type="submit" disabled={loading} className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-light px-4 py-1.5 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-60 flex items-center gap-2">
+            <button type="submit" disabled={loading} className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-60 flex items-center gap-2">
               {loading ? <><Spinner className="h-4 w-4 border-2" /> Searching...</> : 'Search'}
             </button>
           </div>
         </form>
 
         {searched && patientDetails && (
-          <div className="mb-6 bg-light rounded-2xl shadow-card border border-secondary/40 p-6">
+          <div className="mb-6 bg-white rounded-2xl shadow-card border border-gray-100 p-6">
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-light font-heading font-bold text-lg shrink-0">
+              <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white font-heading font-bold text-lg shrink-0">
                 {initials}
               </div>
               <div className="flex-1 min-w-0">
                 <h2 className="font-heading font-semibold text-lg text-content">{patientDetails.full_name || 'Patient'}</h2>
                 {patientDetails.email && (
-                  <p className="text-sm text-content/70 mt-0.5">{patientDetails.email}</p>
+                  <p className="text-sm text-gray-500 mt-0.5">{patientDetails.email}</p>
                 )}
                 <div className="flex flex-wrap items-center gap-4 mt-3">
                   <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export default function ProviderDashboard() {
                     <button
                       type="button"
                       onClick={copyPatientId}
-                      className="p-1.5 rounded-lg text-gray-500 hover:bg-secondary/20 hover:text-primary transition-colors"
+                      className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-primary transition-colors"
                       title="Copy Patient ID"
                     >
                       <Copy className="w-4 h-4" />
@@ -171,7 +171,7 @@ export default function ProviderDashboard() {
               <h2 className="font-heading font-semibold text-lg text-content mb-3">Analytics</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+                <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                       <BarChart3 className="w-5 h-5 text-primary" />
@@ -182,7 +182,7 @@ export default function ProviderDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+                <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
                       <AlertTriangle className="w-5 h-5 text-primary" />
@@ -193,7 +193,7 @@ export default function ProviderDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+                <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
                       <Calendar className="w-5 h-5 text-gray-600" />
@@ -209,7 +209,7 @@ export default function ProviderDashboard() {
               </div>
 
               {riskByDiseaseData.length > 0 && (
-                <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40 mb-6">
+                <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6">
                   <h3 className="font-heading font-semibold text-content mb-3">Risk probability by disease (latest per disease)</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -226,7 +226,7 @@ export default function ProviderDashboard() {
               )}
 
               {barData.length > 0 && (
-                <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40 mb-6">
+                <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6">
                   <h3 className="font-heading font-semibold text-content mb-3">Predictions by disease (count)</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -245,13 +245,13 @@ export default function ProviderDashboard() {
           </>
         )}
 
-        <div className="bg-light rounded-2xl shadow-card border border-secondary/40 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
           {searched && predictions.length > 0 && (
-            <div className="flex justify-end py-3 px-4 border-b border-secondary/40">
+            <div className="flex justify-end py-3 px-4 border-b border-gray-100">
               <button
                 type="button"
                 onClick={exportCsv}
-                className="bg-primary text-light px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90"
+                className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90"
               >
                 Export CSV
               </button>
@@ -260,7 +260,7 @@ export default function ProviderDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-secondary/50 bg-secondary/5">
+                <tr className="border-b border-gray-200 bg-gray-50/50">
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Date</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Disease</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Risk Level</th>
@@ -276,7 +276,7 @@ export default function ProviderDashboard() {
                   <tr><td colSpan={4} className="py-8 text-center text-gray-500">No predictions found for this patient. They may not have run any risk assessments yet.</td></tr>
                 ) : (
                   predictions.map((p) => (
-                    <tr key={p.id} className="border-b border-secondary/40 hover:bg-secondary/5">
+                    <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50/50">
                       <td className="py-3 px-4 text-sm text-gray-700">{new Date(p.created_at).toLocaleString()}</td>
                       <td className="py-3 px-4 text-sm font-medium capitalize">{String(p.disease_type).replace(/_/g, ' ')}</td>
                       <td className="py-3 px-4"><RiskBadge level={p.risk_level} /></td>

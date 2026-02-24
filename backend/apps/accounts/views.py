@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -9,6 +10,7 @@ from .models import User
 from .serializers import UserSerializer, UserCreateSerializer
 
 
+@csrf_exempt
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login(request):
@@ -54,17 +56,27 @@ def current_user(request):
     return Response(serializer.data)
 
 
+@csrf_exempt
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
     """Register a new user (patient or provider)."""
-    serializer = UserCreateSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        # Create Patient profile when role is patient
-        if user.role == "patient":
-            from apps.patients.models import Patient
+    try:
+        serializer = UserCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            # Create Patient profile when role is patient
+            if user.role == "patient":
+                from apps.patients.models import Patient
 
-            Patient.objects.get_or_create(user=user)
-        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                Patient.objects.get_or_create(user=user)
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        from django.db import IntegrityError
+        if isinstance(e, IntegrityError):
+            return Response(
+                {"detail": "A user with this email or username already exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        raise

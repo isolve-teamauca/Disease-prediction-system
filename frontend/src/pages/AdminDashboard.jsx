@@ -18,14 +18,13 @@ import TopNav from '../components/TopNav';
 import Spinner from '../components/Spinner';
 
 const CHART_COLORS = {
-  primary: '#6F1D1B',
-  secondary: '#BB9457',
-  dark: '#432818',
-  light: '#FFE6A7',
-  warm: '#99582A',
+  primary: '#B91C1C',
+  secondary: '#EF4444',
+  dark: '#111827',
+  light: '#F3F4F6',
 };
 
-const DISEASE_COLORS = [CHART_COLORS.primary, CHART_COLORS.secondary, CHART_COLORS.warm, '#7B4B94'];
+const DISEASE_COLORS = [CHART_COLORS.primary, CHART_COLORS.secondary, '#DC2626', '#F87171'];
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -65,7 +64,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-background">
         <TopNav />
         <main className="p-6 max-w-4xl mx-auto">
-          <div className="bg-light rounded-2xl border border-secondary/40 p-8 text-center">
+          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
             <p className="text-content font-medium">{error || 'No data available.'}</p>
           </div>
         </main>
@@ -99,27 +98,27 @@ export default function AdminDashboard() {
       <TopNav />
       <main className="p-6 max-w-6xl mx-auto">
         <h1 className="font-heading text-2xl font-bold text-content mb-1">Admin Dashboard</h1>
-        <p className="text-content/70 text-sm mb-6">System-wide statistics and recent activity</p>
+        <p className="text-gray-500 text-sm mb-6">System-wide statistics and recent activity</p>
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
-            <p className="text-sm font-medium text-content/70 mb-1">Total Patients</p>
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
+            <p className="text-sm font-medium text-gray-500 mb-1">Total Patients</p>
             <p className="font-heading text-3xl font-bold text-primary">{stats.total_patients ?? 0}</p>
           </div>
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
-            <p className="text-sm font-medium text-content/70 mb-1">Total Health Providers</p>
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
+            <p className="text-sm font-medium text-gray-500 mb-1">Total Health Providers</p>
             <p className="font-heading text-3xl font-bold text-primary">{stats.total_providers ?? 0}</p>
           </div>
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
-            <p className="text-sm font-medium text-content/70 mb-1">Total Predictions</p>
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
+            <p className="text-sm font-medium text-gray-500 mb-1">Total Predictions</p>
             <p className="font-heading text-3xl font-bold text-primary">{stats.total_predictions ?? 0}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Predictions by disease (Pie) */}
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <h2 className="font-heading font-semibold text-content mb-4">Predictions by disease</h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -142,7 +141,7 @@ export default function AdminDashboard() {
                   <Tooltip
                     contentStyle={{
                       backgroundColor: CHART_COLORS.light,
-                      border: `1px solid ${CHART_COLORS.secondary}`,
+                      border: '1px solid #e5e7eb',
                       borderRadius: '0.75rem',
                     }}
                     formatter={(value) => [value, 'Predictions']}
@@ -153,18 +152,18 @@ export default function AdminDashboard() {
           </div>
 
           {/* Predictions by risk level (Bar) */}
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <h2 className="font-heading font-semibold text-content mb-4">Predictions by risk level</h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={riskBarData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.secondary} strokeOpacity={0.3} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} />
                   <XAxis dataKey="name" stroke={CHART_COLORS.dark} fontSize={12} />
                   <YAxis stroke={CHART_COLORS.dark} fontSize={12} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: CHART_COLORS.light,
-                      border: `1px solid ${CHART_COLORS.secondary}`,
+                      border: '1px solid #e5e7eb',
                       borderRadius: '0.75rem',
                     }}
                   />
@@ -176,18 +175,18 @@ export default function AdminDashboard() {
         </div>
 
         {/* Growth curve — daily predictions */}
-        <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40 mb-8">
+        <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100 mb-8">
           <h2 className="font-heading font-semibold text-content mb-4">Growth Curve — Predictions per day</h2>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={dailyData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.secondary} strokeOpacity={0.3} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} />
                 <XAxis dataKey="date" stroke={CHART_COLORS.dark} fontSize={12} />
                 <YAxis stroke={CHART_COLORS.dark} fontSize={12} allowDecimals={false} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: CHART_COLORS.light,
-                    border: `1px solid ${CHART_COLORS.secondary}`,
+                    border: '1px solid #e5e7eb',
                     borderRadius: '0.75rem',
                   }}
                 />
@@ -205,12 +204,12 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent registrations table */}
-        <div className="bg-light rounded-2xl shadow-card border border-secondary/40 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
           <h2 className="font-heading font-semibold text-content p-6 pb-0 mb-3">Recent registrations</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-secondary/40 bg-secondary/5">
+                <tr className="border-b border-gray-100 bg-gray-50">
                   <th className="text-left py-3 px-4 text-sm font-medium text-content">Username</th>
                   <th className="text-left py-3 px-4 text-sm font-medium text-content">Role</th>
                   <th className="text-left py-3 px-4 text-sm font-medium text-content">Date joined</th>
@@ -219,16 +218,16 @@ export default function AdminDashboard() {
               <tbody>
                 {(stats.recent_registrations || []).length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="py-8 text-center text-content/70 text-sm">
+                    <td colSpan={3} className="py-8 text-center text-gray-500 text-sm">
                       No registrations yet
                     </td>
                   </tr>
                 ) : (
                   (stats.recent_registrations || []).map((r, i) => (
-                    <tr key={i} className="border-b border-secondary/30 hover:bg-secondary/5">
+                    <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-3 px-4 text-sm text-content font-medium">{r.username}</td>
                       <td className="py-3 px-4 text-sm text-content capitalize">{r.role}</td>
-                      <td className="py-3 px-4 text-sm text-content/80">
+                      <td className="py-3 px-4 text-sm text-gray-600">
                         {r.date_joined ? new Date(r.date_joined).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '–'}
                       </td>
                     </tr>

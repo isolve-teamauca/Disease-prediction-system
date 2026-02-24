@@ -4,7 +4,7 @@ export default function PredictionCard({ disease, risk_level, probability, creat
   const date = created_at ? new Date(created_at).toLocaleDateString() : '–';
   const diseaseLabel = disease ? disease.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : '–';
   return (
-    <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+    <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
       <div className="flex justify-between items-start gap-2">
         <div>
           <p className="font-heading font-semibold text-gray-900">{diseaseLabel}</p>

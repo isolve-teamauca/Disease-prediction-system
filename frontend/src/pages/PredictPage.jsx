@@ -294,7 +294,7 @@ export default function PredictPage() {
         )}
 
         <form onSubmit={handleSubmit} className="max-w-2xl">
-          <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40 space-y-4">
+          <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100 space-y-4">
             {user?.role === 'provider' && (
               <div className="space-y-3">
                 <label className="block text-sm font-medium text-content mb-1">Patient ID (patient code)</label>
@@ -304,13 +304,13 @@ export default function PredictPage() {
                     placeholder="Enter patient code"
                     value={patientId}
                     onChange={(e) => { setPatientId(e.target.value); setVerifiedPatient(null); }}
-                    className="flex-1 bg-input rounded-xl border border-secondary/50 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="flex-1 bg-input rounded-xl border border-gray-200 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                   <button
                     type="button"
                     onClick={handleVerifyPatient}
                     disabled={verifying || !patientId.trim()}
-                    className="bg-primary text-light px-4 py-2 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 shrink-0"
+                    className="bg-primary text-white px-4 py-2 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 shrink-0"
                   >
                     {verifying ? <><Spinner className="h-4 w-4 border-2 border-white border-t-transparent" /> Verify</> : 'Verify'}
                   </button>
@@ -332,20 +332,20 @@ export default function PredictPage() {
                   step={f.step}
                   value={features[f.name] ?? ''}
                   onChange={(e) => updateFeature(f.name, e.target.value)}
-                  className="w-full bg-input rounded-xl border border-secondary/50 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full bg-input rounded-xl border border-gray-200 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
             ))}
           </div>
-          <button type="submit" disabled={submitting || (user?.role === 'provider' && !verifiedPatient)} className="mt-6 w-full max-w-2xl bg-primary text-light py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2">
+          <button type="submit" disabled={submitting || (user?.role === 'provider' && !verifiedPatient)} className="mt-6 w-full max-w-2xl bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2">
             {submitting ? <><Spinner className="h-5 w-5 border-2 border-white border-t-transparent" /> Running prediction...</> : 'Run Prediction'}
           </button>
         </form>
 
         {result && (
           <div className="mt-8 max-w-2xl">
-            <div className="bg-light rounded-2xl shadow-card p-6 border border-secondary/40">
-              <p className="text-sm font-medium text-content/70 mb-1">Result</p>
+            <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
+              <p className="text-sm font-medium text-gray-500 mb-1">Result</p>
               <h2 className="font-heading font-semibold text-lg text-content mb-4">{diseaseDisplayName}</h2>
               <div className="flex flex-wrap items-baseline gap-3 mb-3">
                 <span className={`font-heading font-bold text-4xl ${RISK_PERCENTAGE_COLORS[result.risk_color] || 'text-content'}`}>
@@ -353,7 +353,7 @@ export default function PredictPage() {
                 </span>
                 <RiskBadge level={result.risk_level} color={result.risk_color} />
               </div>
-              <p className="text-sm text-content/70 mb-4">Risk probability</p>
+              <p className="text-sm text-gray-500 mb-4">Risk probability</p>
               {result.risk_advice && (
                 <div className={`rounded-xl border-l-4 p-4 text-sm mb-6 ${RISK_BORDER_COLORS[result.risk_color] || 'border-l-gray-400 bg-gray-50'}`}>
                   <p className="font-medium text-content mb-1">Recommendation</p>
@@ -374,14 +374,14 @@ export default function PredictPage() {
                 <button
                   type="button"
                   onClick={downloadReport}
-                  className="flex-1 bg-light border-2 border-primary text-primary py-3 rounded-xl font-medium hover:bg-primary hover:text-light transition-colors"
+                  className="flex-1 bg-white border-2 border-primary text-primary py-3 rounded-xl font-medium hover:bg-primary hover:text-white transition-colors"
                 >
                   Download Report
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate(user?.role === 'patient' ? '/dashboard/patient' : '/dashboard/provider')}
-                  className="flex-1 bg-primary text-light py-3 rounded-xl font-medium hover:opacity-90"
+                  className="flex-1 bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90"
                 >
                   Save & View History
                 </button>

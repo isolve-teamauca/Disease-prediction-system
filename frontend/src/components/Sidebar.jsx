@@ -26,11 +26,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-dark border-r border-secondary/30 flex flex-col">
-      <div className="p-4 border-b border-secondary/30">
+    <aside className="w-64 min-h-screen bg-white border-r border-gray-200 flex flex-col">
+      <div className="p-4 border-b border-gray-100">
         <NavLink to={isPatient ? '/dashboard/patient' : '/dashboard/provider'} className="flex items-center gap-3">
-          <MedPredictLogo className="w-10 h-10" color="#FFE6A7" />
-          <span className="font-heading font-bold text-light">MedPredict</span>
+          <MedPredictLogo className="w-10 h-10" />
+          <span className="font-heading font-bold text-primary">MedPredict</span>
         </NavLink>
       </div>
       <nav className="p-3 flex-1">
@@ -39,8 +39,8 @@ export default function Sidebar() {
             key={to + label}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${
-                isActive ? 'bg-secondary/20 font-medium text-secondary' : 'text-light/90 hover:bg-secondary/10 hover:text-secondary'
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-700 hover:bg-input transition-colors ${
+                isActive ? 'bg-input font-medium text-accent' : ''
               }`
             }
           >
@@ -49,11 +49,11 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className="p-3 border-t border-secondary/30">
+      <div className="p-3 border-t border-gray-100">
         <button
           type="button"
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-light/90 hover:bg-secondary/20 hover:text-secondary transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-700 transition-colors"
         >
           <LogOut className="w-5 h-5" />
           Logout

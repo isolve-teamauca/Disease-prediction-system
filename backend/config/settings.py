@@ -131,11 +131,18 @@ CORS_ALLOW_CREDENTIALS = True
 # -----------------------------------------------------------------------------
 # Database (DATABASE_URL for Render/Heroku; default SQLite for local)
 # -----------------------------------------------------------------------------
-import dj_database_url
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default="sqlite:///db.sqlite3",
-        conn_max_age=600,
-    )
-}
+try:
+    import dj_database_url
+    DATABASES = {
+        "default": dj_database_url.config(
+            default="sqlite:///db.sqlite3",
+            conn_max_age=600,
+        )
+    }
+except ImportError:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }

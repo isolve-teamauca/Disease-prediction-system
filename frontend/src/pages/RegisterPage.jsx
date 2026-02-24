@@ -61,12 +61,17 @@ export default function RegisterPage() {
       navigate('/login', { replace: true });
     } catch (err) {
       const data = err.response?.data;
-      if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-        const first = Object.entries(data)[0];
-        if (first) toast.error(`${first[0]}: ${Array.isArray(first[1]) ? first[1][0] : first[1]}`);
-        else toast.error('Registration failed.');
+      const status = err.response?.status;
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        if (data.detail) {
+          toast.error(typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail));
+        } else {
+          const parts = Object.entries(data).map(([k, v]) => `${k}: ${Array.isArray(v) ? v[0] : v}`);
+          toast.error(parts.length ? parts.join(' ') : 'Registration failed.');
+        }
       } else {
-        toast.error(data?.detail || 'Registration failed.');
+        const msg = typeof data === 'string' ? data.slice(0, 100) : (data?.detail || (status === 403 ? 'Request blocked. Try same-origin or check CORS/CSRF.' : 'Registration failed.'));
+        toast.error(msg);
       }
     } finally {
       setSubmitting(false);
@@ -77,7 +82,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-background relative">
       <ParticleBackground />
       <div className="w-full max-w-md relative z-0">
-        <div className="bg-light rounded-2xl shadow-card p-8 border border-secondary/40">
+        <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">
           <div className="flex flex-col items-center text-center mb-6">
             <MedPredictLogo className="w-16 h-16 mb-4" />
             <h1 className="font-heading text-2xl font-bold text-primary">Create Your Account</h1>
@@ -92,29 +97,29 @@ export default function RegisterPage() {
                   type="button"
                   onClick={() => setRole('patient')}
                   className={`p-4 rounded-2xl border-2 text-left transition-colors ${
-                    role === 'patient' ? 'border-secondary bg-secondary/10' : 'border-secondary/50 hover:border-secondary'
+                    role === 'patient' ? 'border-accent bg-accent/5' : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <User className="w-8 h-8 text-content/70 mb-2" />
+                  <User className="w-8 h-8 text-gray-500 mb-2" />
                   <p className="font-heading font-semibold text-primary">Patient</p>
-                  <p className="text-xs text-content/70 mt-0.5">Track my health</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Track my health</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole('provider')}
                   className={`p-4 rounded-2xl border-2 text-left transition-colors ${
-                    role === 'provider' ? 'border-secondary bg-secondary/10' : 'border-secondary/50 hover:border-secondary'
+                    role === 'provider' ? 'border-accent bg-accent/5' : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Stethoscope className="w-8 h-8 text-secondary mb-2" />
+                  <Stethoscope className="w-8 h-8 text-accent mb-2" />
                   <p className="font-heading font-semibold text-primary">Health Provider</p>
-                  <p className="text-xs text-content/70 mt-0.5">Manage patients</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Manage patients</p>
                 </button>
               </div>
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="w-full bg-primary text-light py-3 rounded-xl font-medium hover:opacity-90"
+                className="w-full bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90"
               >
                 Continue
               </button>
@@ -137,11 +142,11 @@ export default function RegisterPage() {
                   <div className="space-y-1">
                     <label className="block text-sm font-medium text-content">Specialization *</label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-content/70"><Stethoscope className="w-5 h-5" /></span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><Stethoscope className="w-5 h-5" /></span>
                       <select
                         value={form.specialization}
                         onChange={(e) => update('specialization', e.target.value)}
-                        className="w-full bg-input rounded-xl border border-secondary/50 py-2.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-secondary/40"
+                        className="w-full bg-input rounded-xl border border-gray-200 py-2.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-accent/30"
                       >
                         <option value="">Select specialization</option>
                         {SPECIALIZATIONS.map((s) => (
@@ -159,10 +164,10 @@ export default function RegisterPage() {
               <InputField icon={Lock} label="Confirm Password" type="password" placeholder="••••••••" value={form.confirm_password} onChange={(v) => update('confirm_password', v)} error={errors.confirm_password} required />
 
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={() => setStep(1)} className="px-4 py-2.5 rounded-xl border border-warm text-content hover:bg-warm/10 bg-warm/5">
+                <button type="button" onClick={() => setStep(1)} className="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50">
                   Back
                 </button>
-                <button type="submit" disabled={submitting} className="flex-1 bg-primary text-light py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2">
+                <button type="submit" disabled={submitting} className="flex-1 bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2">
                   {submitting ? <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" /> : null}
                   Create Account
                 </button>
@@ -170,7 +175,7 @@ export default function RegisterPage() {
             </form>
           )}
 
-          <p className="text-center text-sm text-content/80 mt-6">
+          <p className="text-center text-sm text-gray-600 mt-6">
             Already have an account?{' '}
             <Link to="/login" className="text-primary font-medium hover:underline">Sign in</Link>
           </p>

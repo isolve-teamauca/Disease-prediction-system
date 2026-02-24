@@ -40,7 +40,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-background relative">
       <ParticleBackground />
       <div className="w-full max-w-md relative z-0">
-        <div className="bg-light rounded-2xl shadow-card p-8 border border-secondary/40">
+        <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">
           <div className="flex flex-col items-center text-center mb-6">
             <MedPredictLogo className="w-16 h-16 mb-4" />
             <h1 className="font-heading text-2xl font-bold text-content">Welcome to MedPredict</h1>
@@ -49,7 +49,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-content mb-2">I am signing in as</label>
-              <RoleToggle value={role} onChange={setRole} disabled={submitting} />
+              <RoleToggle value={role} onChange={setRole} disabled={submitting} showAdmin />
             </div>
 
             <InputField
@@ -72,16 +72,16 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-primary text-light py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {submitting ? (
                 <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
               ) : null}
-              Sign In as {role === 'patient' ? 'Patient' : 'Health Provider'}
+              Sign In as {role === 'patient' ? 'Patient' : role === 'admin' ? 'Admin' : 'Health Provider'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-content/80 mt-6">
+          <p className="text-center text-sm text-gray-600 mt-6">
             Don&apos;t have an account?{' '}
             <Link to="/register" className="text-primary font-medium hover:underline">
               Sign up

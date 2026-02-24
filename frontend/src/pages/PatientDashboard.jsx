@@ -83,24 +83,24 @@ export default function PatientDashboard() {
         <h1 className="font-heading text-2xl font-bold text-content mb-1">
           Welcome, {user?.full_name || user?.email || 'Patient'}
         </h1>
-        <p className="text-content/70 text-sm mb-6">Track your health and run risk assessments</p>
+        <p className="text-gray-500 text-sm mb-6">Track your health and run risk assessments</p>
 
         {patientCode != null && (
-          <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40 mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Stethoscope className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-content/70">Your patient code</p>
+                <p className="text-sm text-gray-500">Your patient code</p>
                 <p className="font-heading font-mono font-bold text-lg text-content">{(patientCode)}</p>
-                <p className="text-xs text-content/70 mt-0.5">Give this code to your doctor so they can view your predictions.</p>
+                <p className="text-xs text-gray-500 mt-0.5">Give this code to your doctor so they can view your predictions.</p>
               </div>
             </div>
             <button
               type="button"
               onClick={copyPatientCode}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-warm text-content hover:bg-warm/10 text-sm font-medium bg-warm/5"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 text-sm font-medium"
             >
               <Copy className="w-4 h-4" />
               Copy code
@@ -109,50 +109,50 @@ export default function PatientDashboard() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-secondary" />
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <Activity className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <p className="text-sm text-content/70">Total Predictions</p>
+                <p className="text-sm text-gray-500">Total Predictions</p>
                 <p className="font-heading font-bold text-xl">{total}</p>
               </div>
             </div>
           </div>
-          <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-amber-700" />
               </div>
               <div>
-                <p className="text-sm text-content/70">Last Risk Level</p>
+                <p className="text-sm text-gray-500">Last Risk Level</p>
                 {lastRisk ? <RiskBadge level={lastRisk} /> : <p className="font-medium">–</p>}
               </div>
             </div>
           </div>
-          <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40">
+          <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
                 <AlertCircle className="w-5 h-5 text-emerald-700" />
               </div>
               <div>
-                <p className="text-sm text-content/70">Most Predicted</p>
+                <p className="text-sm text-gray-500">Most Predicted</p>
                 <p className="font-heading font-semibold capitalize">{mostPredicted}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40 mb-6">
+        <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6">
           <h2 className="font-heading font-semibold text-lg text-content mb-3">Risk probability over time</h2>
           {loading ? (
-            <div className="h-64 flex flex-col items-center justify-center gap-3 text-content/70">
+            <div className="h-64 flex flex-col items-center justify-center gap-3 text-gray-500">
               <Spinner className="h-8 w-8" />
               <span className="text-sm">Loading prediction history...</span>
             </div>
           ) : !hasHistoryChart ? (
-            <p className="text-content/70 py-8 text-center">No prediction history yet. Run a prediction to see your risk over time.</p>
+            <p className="text-gray-500 py-8 text-center">No prediction history yet. Run a prediction to see your risk over time.</p>
           ) : (
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
@@ -169,7 +169,7 @@ export default function PatientDashboard() {
                     content={({ active, payload, label }) => {
                       if (!active || !payload?.length || !label) return null;
                       return (
-                        <div className="bg-light border border-secondary/50 rounded-lg shadow-lg p-3 text-content">
+                        <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-content">
                           <p className="font-medium text-sm mb-2">{new Date(label).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                           <ul className="text-sm space-y-1">
                             {payload.filter((e) => e.value != null).map((e) => (
@@ -202,7 +202,7 @@ export default function PatientDashboard() {
         </div>
 
         {showLineChart && (
-          <div className="bg-light rounded-2xl shadow-card p-4 border border-secondary/40 mb-6">
+          <div className="bg-white rounded-2xl shadow-card p-4 border border-gray-100 mb-6">
             <h2 className="font-heading font-semibold text-lg text-content mb-3">Probability over time (last 10)</h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -233,7 +233,7 @@ export default function PatientDashboard() {
               <Link
                 key={slug}
                 to={`/predict/${slug}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-light rounded-xl text-sm font-medium hover:opacity-90"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:opacity-90"
               >
                 <Activity className="w-4 h-4" />
                 {label}
@@ -245,15 +245,15 @@ export default function PatientDashboard() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-semibold text-lg text-content">Recent predictions</h2>
-            <Link to="/history" className="text-sm text-secondary font-medium hover:underline">View all</Link>
+            <Link to="/history" className="text-sm text-accent font-medium hover:underline">View all</Link>
           </div>
           {loading ? (
             <div className="flex items-center justify-center gap-3 py-12">
               <Spinner className="h-8 w-8" />
-              <span className="text-content/70 text-sm">Loading recent predictions...</span>
+              <span className="text-gray-500 text-sm">Loading recent predictions...</span>
             </div>
           ) : recent.length === 0 ? (
-            <p className="text-content/70 py-8 text-center">No predictions yet. Start with a quick action above to run your first risk assessment.</p>
+            <p className="text-gray-500 py-8 text-center">No predictions yet. Start with a quick action above to run your first risk assessment.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {recent.map((p) => (

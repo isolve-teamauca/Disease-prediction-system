@@ -7,7 +7,7 @@ body {
   margin: 0;
   min-height: 100%;
   font-family: 'DM Sans', system-ui, sans-serif;
-  background: #FFE6A7;
+  background: #FFFFFF;
   position: relative;
 }
 
@@ -21,14 +21,3 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
-/* How MedPredict Works page: subtle gradient animation */
-.page-gradient-bg {
-  background: linear-gradient(135deg, #FFE6A7 0%, #BB9457 50%, #FFE6A7 100%);
-  background-size: 200% 200%;
-  animation: gradient-shift 8s ease infinite;
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
