@@ -3,6 +3,7 @@ Django settings for Disease Risk Prediction System.
 Uses environment variables (load from .env via python-dotenv).
 """
 import os
+import dj_database_url
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -131,15 +132,17 @@ CORS_ALLOW_CREDENTIALS = True
 # -----------------------------------------------------------------------------
 # Database (DATABASE_URL for Render/Heroku; default SQLite for local)
 # -----------------------------------------------------------------------------
-try:
-    import dj_database_url
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
     DATABASES = {
         "default": dj_database_url.config(
-            default="sqlite:///db.sqlite3",
+            default=DATABASE_URL,
             conn_max_age=600,
+            ssl_require=True,
         )
     }
-except ImportError:
+else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
