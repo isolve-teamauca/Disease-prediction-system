@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
-const CDN_THREE = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+// MedPredict health-themed background: medical cross particles (+) and ECG-style heartbeat line
 const BG_COLOR = 0x1a0a08;
 const PARTICLE_OPACITY = 0.4;
 const MAX_PARTICLES = 60;
@@ -10,21 +11,7 @@ const ECG_COLOR = 0x6f1d1b;
 const ECG_AMPLITUDE = 12;
 const ECG_SEGMENTS = 120;
 
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (typeof window !== 'undefined' && window.THREE) {
-      resolve(window.THREE);
-      return;
-    }
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = () => resolve(window.THREE);
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-}
-
-function makeCrossTexture(size = 32) {
+function makeCrossTexture(THREE, size = 32) {
   const c = document.createElement('canvas');
   c.width = size;
   c.height = size;
@@ -34,7 +21,7 @@ function makeCrossTexture(size = 32) {
   ctx.fillStyle = `rgba(187, 148, 87, ${PARTICLE_OPACITY})`;
   ctx.fillRect(cx - w / 2, 0, w, size);
   ctx.fillRect(0, cx - w / 2, size, w);
-  const t = new window.THREE.CanvasTexture(c);
+  const t = new THREE.CanvasTexture(c);
   t.needsUpdate = true;
   return t;
 }
@@ -43,7 +30,6 @@ export default function ParticleBackground() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    let THREE;
     let scene, camera, renderer;
     let crossPoints, crossPositions;
     let ecgLine, ecgPositions;
@@ -61,11 +47,18 @@ export default function ParticleBackground() {
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setClearColor(BG_COLOR, 1);
+      const canvas = renderer.domElement;
+      canvas.style.position = 'absolute';
+      canvas.style.left = '0';
+      canvas.style.top = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.display = 'block';
       if (containerRef.current) {
-        containerRef.current.appendChild(renderer.domElement);
+        containerRef.current.appendChild(canvas);
       }
 
-      // Cross particles
+      // Medical cross (+) particles
       const crossGeo = new THREE.BufferGeometry();
       const crossPos = new Float32Array(MAX_PARTICLES * 3);
       for (let i = 0; i < MAX_PARTICLES; i++) {
@@ -78,7 +71,7 @@ export default function ParticleBackground() {
 
       const crossMat = new THREE.PointsMaterial({
         size: PARTICLE_SIZE,
-        map: makeCrossTexture(),
+        map: makeCrossTexture(THREE),
         transparent: true,
         opacity: 1,
         depthWrite: false,
@@ -87,7 +80,7 @@ export default function ParticleBackground() {
       crossPoints = new THREE.Points(crossGeo, crossMat);
       scene.add(crossPoints);
 
-      // ECG / heartbeat line (sine wave across middle)
+      // ECG / heartbeat line (sine wave across center)
       const ecgGeo = new THREE.BufferGeometry();
       const ecgPos = new Float32Array((ECG_SEGMENTS + 1) * 3);
       ecgGeo.setAttribute('position', new THREE.BufferAttribute(ecgPos, 3));
@@ -109,7 +102,6 @@ export default function ParticleBackground() {
       const halfW = width / 2;
       const t = (Date.now() - startTime) * 0.001;
 
-      // Drift particles up; reset to bottom when past top
       for (let i = 0; i < MAX_PARTICLES * 3; i += 3) {
         crossPositions[i + 1] += DRIFT_SPEED;
         if (crossPositions[i + 1] > halfH + 50) {
@@ -119,7 +111,6 @@ export default function ParticleBackground() {
       }
       crossPoints.geometry.attributes.position.needsUpdate = true;
 
-      // ECG sine wave along center (y = 0), pulsing over time
       const amplitude = ECG_AMPLITUDE * (0.7 + 0.3 * Math.sin(t * 2));
       for (let i = 0; i <= ECG_SEGMENTS; i++) {
         const x = -halfW + (i / ECG_SEGMENTS) * width;
@@ -144,14 +135,9 @@ export default function ParticleBackground() {
       renderer.setSize(width, height);
     }
 
-    loadScript(CDN_THREE)
-      .then((T) => {
-        THREE = T;
-        init();
-        animate();
-        window.addEventListener('resize', onResize);
-      })
-      .catch(() => {});
+    init();
+    animate();
+    window.addEventListener('resize', onResize);
 
     return () => {
       window.removeEventListener('resize', onResize);
@@ -176,7 +162,7 @@ export default function ParticleBackground() {
       ref={containerRef}
       aria-hidden
       className="fixed inset-0 w-full h-full"
-      style={{ zIndex: -1, pointerEvents: 'none' }}
+      style={{ zIndex: -1, pointerEvents: 'none', backgroundColor: '#1a0a08' }}
     />
   );
 }

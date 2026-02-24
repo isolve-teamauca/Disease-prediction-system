@@ -53,5 +53,5 @@ const keepAlive = () => {
 // Ping every 10 minutes
 setInterval(keepAlive, 10 * 60 * 1000);
 
-// Ping immediately on app load
-keepAlive();
+// Defer first ping so it doesn't slow initial load (e.g. on deploy)
+setTimeout(keepAlive, 8 * 1000);

@@ -37,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background relative">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
       <ParticleBackground />
       <div className="w-full max-w-md relative z-0">
         <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">

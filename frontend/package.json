@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.6.0",
+    "three": "^0.160.0",
     "jspdf": "^2.5.2",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",

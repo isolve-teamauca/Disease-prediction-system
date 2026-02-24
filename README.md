@@ -95,15 +95,22 @@ npm run dev
 
 App runs at **http://localhost:3000**. Set `VITE_API_URL=http://localhost:8000` in `.env` if the API is not on that URL.
 
-### 3. Create an admin user (optional)
+### 3. Admin dashboard credentials
 
-Admin accounts are **not** created from the registration page. From the **backend** directory:
+Admin accounts are **not** created from the registration page. On **deploy**, `build.sh` creates a default admin if none exists.
+
+| Field    | Value |
+| -------- | ----- |
+| **Email** | `admin@medpredict.com` |
+| **Password** | `Admin@2026` |
+
+On the **Login** page, choose **Admin** in the role selector, then sign in with the email and password above.
+
+To create an admin manually (e.g. locally), from the **backend** directory:
 
 ```bash
-python manage.py shell -c "from apps.accounts.models import User; u = User.objects.create_superuser('admin', 'admin@medpredict.com', 'admin123'); u.role = 'admin'; u.save()"
+python manage.py shell -c "from apps.accounts.models import User; u = User.objects.create_superuser('admin', 'admin@medpredict.com', 'Admin@2026'); u.role = 'admin'; u.save()"
 ```
-
-Then on the **Login** page, select **Admin** and sign in with **admin@medpredict.com** / **admin123**. Use the exact email you passed in the command (e.g. for `admin@predict.com`, sign in with that).
 
 ---
 
