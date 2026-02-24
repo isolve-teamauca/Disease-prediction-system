@@ -41,3 +41,17 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+// Keep backend alive on free tier
+const keepAlive = () => {
+  fetch(`${BACKEND_URL}/api/`)
+    .catch(() => {}); // silently ignore errors
+};
+
+// Ping every 10 minutes
+setInterval(keepAlive, 10 * 60 * 1000);
+
+// Ping immediately on app load
+keepAlive();
