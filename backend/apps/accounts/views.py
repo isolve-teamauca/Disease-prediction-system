@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
@@ -20,29 +19,37 @@ logger = logging.getLogger(__name__)
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login(request):
-    """
-    Session login. Accepts { "username" or "email", "password" }.
-    Returns current user on success. Frontend must send credentials (cookies) on subsequent requests.
-    """
+    from rest_framework_simplejwt.tokens import RefreshToken
+
     username = request.data.get("username") or request.data.get("email")
     password = request.data.get("password")
+
     if not username or not password:
         return Response(
             {"detail": "Username/email and password required."},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    # Allow login by email: find user by email then authenticate by username
+
+    # Allow login by email
     user = User.objects.filter(email=username).first()
     if user:
         username = user.username
+
     user = authenticate(request, username=username, password=password)
     if user is None:
         return Response(
             {"detail": "Invalid credentials."},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    auth_login(request, user)
-    return Response(UserSerializer(user).data)
+
+    refresh = RefreshToken.for_user(user)
+    return Response(
+        {
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": UserSerializer(user).data,
+        }
+    )
 
 
 @api_view(["POST"])
