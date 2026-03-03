@@ -34,16 +34,16 @@ export default function HowItWorksPage() {
     <div className="min-h-screen relative">
       <TopNav />
       <main className="p-6 max-w-4xl mx-auto">
-        <h1 className="font-heading text-3xl font-bold text-content mb-2">How MedPredict Works</h1>
+        <h1 className="font-heading text-3xl font-bold text-content mb-2">How MbereMed Works</h1>
         <p className="text-gray-600 text-sm mb-8">Understanding our disease risk assessment tool</p>
 
         <section className="mb-10">
-          <h2 className="font-heading text-xl font-semibold text-content mb-3">What MedPredict Does</h2>
+          <h2 className="font-heading text-xl font-semibold text-content mb-3">What MbereMed Does</h2>
           <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-content leading-relaxed">
-              MedPredict is a data-driven disease risk assessment system that helps patients and healthcare providers
+              MbereMed is a data-driven disease risk assessment system that helps patients and healthcare providers
               understand the likelihood of developing certain conditions. You enter clinical and lifestyle information
-              — such as age, blood pressure, glucose levels, and other health metrics — and MedPredict returns a risk
+              — such as age, blood pressure, glucose levels, and other health metrics — and MbereMed returns a risk
               probability score along with general lifestyle recommendations. It is designed to support clinical
               judgment, not replace it.
             </p>
@@ -74,7 +74,7 @@ export default function HowItWorksPage() {
           <h2 className="font-heading text-xl font-semibold text-content mb-3">How the ML Model Works</h2>
           <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-gray-700 leading-relaxed mb-4">
-              MedPredict uses machine learning models trained on real medical datasets. Each disease has its own
+              MbereMed uses machine learning models trained on real medical datasets. Each disease has its own
               model built with a <strong>Random Forest classifier</strong>—an approach that combines many
               decision trees to produce stable, interpretable risk estimates. Your inputs (e.g., age, blood
               pressure, glucose) are scaled and fed into the model, which outputs a <strong>probability
@@ -96,7 +96,7 @@ export default function HowItWorksPage() {
               This tool assists healthcare professionals and does not replace medical diagnosis.
             </p>
             <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-              MedPredict provides risk estimates for informational and screening purposes only. Always consult
+              MbereMed provides risk estimates for informational and screening purposes only. Always consult
               a licensed healthcare professional for diagnosis, treatment, and medical decisions.
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function HowItWorksPage() {
           <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
             <p className="text-content leading-relaxed">
               Patient data is stored securely and only accessible by authorized health providers. Predictions and
-              patient information are used solely to support care within the MedPredict system and are not
+              patient information are used solely to support care within the MbereMed system and are not
               shared with third parties for marketing or other purposes.
             </p>
           </div>
@@ -121,7 +121,7 @@ export default function HowItWorksPage() {
             to="/login"
             className="bg-primary text-white px-6 py-3 rounded-xl font-medium hover:opacity-90 transition-opacity"
           >
-            Sign in to MedPredict
+            Sign in to MbereMed
           </Link>
         </div>
       </main>

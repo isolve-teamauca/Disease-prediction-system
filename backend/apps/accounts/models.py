@@ -1,5 +1,5 @@
 """
-Custom User model for MedPredict: patient and provider roles.
+Custom User model for MbereMed: patient and provider roles.
 """
 from django.contrib.auth.models import AbstractUser
 from django.db import models

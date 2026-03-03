@@ -1,4 +1,4 @@
-# Disease Risk Prediction System – Backend (MedPredict)
+# Disease Risk Prediction System – Backend (MbereMed)
 
 Django REST API with PostgreSQL (`disease_prediction_db`). Predicts **Heart Disease**, **Hypertension**, **Stroke**, **Diabetes** using sklearn `.pkl` models.
 

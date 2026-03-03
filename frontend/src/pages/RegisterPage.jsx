@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Phone, Mail, Calendar, Lock, Stethoscope, BadgeCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
-import MedPredictLogo from '../components/MedPredictLogo';
+import MbereMedLogo from '../components/MbereMedLogo';
 import RoleToggle from '../components/RoleToggle';
 import InputField from '../components/InputField';
 import { useAuth } from '../context/AuthContext';
@@ -82,9 +82,9 @@ export default function RegisterPage() {
       <div className="w-full max-w-md relative z-0">
         <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">
           <div className="flex flex-col items-center text-center mb-6">
-            <MedPredictLogo className="w-16 h-16 mb-4" />
+            <MbereMedLogo className="w-16 h-16 mb-4" />
             <h1 className="font-heading text-2xl font-bold text-primary">Create Your Account</h1>
-            <p className="text-gray-500 text-sm mt-1">Join MedPredict for data-driven health insights</p>
+            <p className="text-gray-500 text-sm mt-1">Join MbereMed for data-driven health insights</p>
           </div>
 
           {step === 1 ? (

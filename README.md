@@ -1,4 +1,4 @@
-# MedPredict — Disease Risk Prediction System
+# MbereMed — Disease Risk Prediction System
 
 A full-stack web application for **clinically-informed disease risk assessment**. Patients and health providers can run risk predictions for heart disease, diabetes, hypertension, and stroke; admins get system-wide statistics and user management.
 
@@ -101,7 +101,7 @@ Admin accounts are **not** created from the registration page. On **deploy**, `b
 
 | Field    | Value |
 | -------- | ----- |
-| **Email** | `admin@medpredict.com` |
+| **Email** | `admin@mberemed.com` |
 | **Password** | `Admin@2026` |
 
 On the **Login** page, choose **Admin** in the role selector, then sign in with the email and password above.
@@ -109,7 +109,7 @@ On the **Login** page, choose **Admin** in the role selector, then sign in with 
 To create an admin manually (e.g. locally), from the **backend** directory:
 
 ```bash
-python manage.py shell -c "from apps.accounts.models import User; u = User.objects.create_superuser('admin', 'admin@medpredict.com', 'Admin@2026'); u.role = 'admin'; u.save()"
+python manage.py shell -c "from apps.accounts.models import User; u = User.objects.create_superuser('admin', 'admin@mberemed.com', 'Admin@2026'); u.role = 'admin'; u.save()"
 ```
 
 ---

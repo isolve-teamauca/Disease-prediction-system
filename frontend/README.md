@@ -1,4 +1,4 @@
-# MedPredict Frontend
+# MbereMed Frontend
 
 React + Vite + Tailwind CSS frontend for the Disease Risk Prediction System.
 

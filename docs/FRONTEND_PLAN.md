@@ -1,6 +1,6 @@
-# MedPredict Frontend – Plan & Backend Integration
+# MbereMed Frontend – Plan & Backend Integration
 
-This document plans the frontend to match the MedPredict UI mockups and integrate with the Django backend.
+This document plans the frontend to match the MbereMed UI mockups and integrate with the Django backend.
 
 **All frontend code lives in the project’s `frontend/` folder.**
 
@@ -41,7 +41,7 @@ Base URL: `http://127.0.0.1:8000` (dev). All API requests must send **credential
 
 ## 3. Auth flows and payloads
 
-### 3.1 Login (matches “Welcome to MedPredict” screen)
+### 3.1 Login (matches “Welcome to MbereMed” screen)
 
 - **URL:** `POST /api/auth/login/`
 - **Body:** `{ "email": "user@example.com", "password": "***" }`  
@@ -116,7 +116,7 @@ Base URL: `http://127.0.0.1:8000` (dev). All API requests must send **credential
 | Route | Description | Auth |
 |-------|-------------|------|
 | `/` | Landing or redirect to `/login` or `/dashboard` | - |
-| `/login` | “Welcome to MedPredict” – role toggle, email, password, Sign in, Sign up link | No |
+| `/login` | “Welcome to MbereMed” – role toggle, email, password, Sign in, Sign up link | No |
 | `/register` | “Create Your Account” – step 1: “I am a…” (Patient / Healthcare Provider) | No |
 | `/register/patient` or same page with role=patient | Form: Full Name, Phone, Email, DOB, Password, Confirm, Create Account | No |
 | `/register/provider` or same page with role=provider | Form: Full Name, Phone, Email, Specialization, License, Password, Confirm, Create Account | No |
@@ -132,7 +132,7 @@ You can merge “Create Your Account” into one route and toggle form fields by
 
 - **Layout**
   - Centered card on light blue-grey background.
-  - MedPredict logo (blue circle + ECG/heartbeat icon) and title/tagline.
+  - MbereMed logo (blue circle + ECG/heartbeat icon) and title/tagline.
 - **Login**
   - Role toggle: Patient | Healthcare Provider (cosmetic; backend uses `user.role` after login).
   - Email input, Password input.

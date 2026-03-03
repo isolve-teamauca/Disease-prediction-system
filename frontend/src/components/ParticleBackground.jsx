@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-// MedPredict health-themed background: medical cross particles (+) and ECG-style heartbeat line
+// MbereMed health-themed background: medical cross particles (+) and ECG-style heartbeat line
 const BG_COLOR = 0x1a0a08;
 const PARTICLE_OPACITY = 0.85;
 const MAX_PARTICLES = 60;

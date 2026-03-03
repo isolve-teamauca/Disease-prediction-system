@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Activity, History, LogOut, Search } from 'lucide-react';
-import MedPredictLogo from './MedPredictLogo';
+import MbereMedLogo from './MbereMedLogo';
 import { useAuth } from '../context/AuthContext';
 
 const navPatient = [
@@ -29,8 +29,8 @@ export default function Sidebar() {
     <aside className="w-64 min-h-screen bg-white border-r border-gray-200 flex flex-col">
       <div className="p-4 border-b border-gray-100">
         <NavLink to={isPatient ? '/dashboard/patient' : '/dashboard/provider'} className="flex items-center gap-3">
-          <MedPredictLogo className="w-10 h-10" />
-          <span className="font-heading font-bold text-primary">MedPredict</span>
+          <MbereMedLogo className="w-10 h-10" />
+          <span className="font-heading font-bold text-primary">MbereMed</span>
         </NavLink>
       </div>
       <nav className="p-3 flex-1">

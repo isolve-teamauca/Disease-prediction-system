@@ -1,23 +1,23 @@
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { LayoutDashboard, Activity, History, LogOut, HelpCircle } from 'lucide-react';
-import MedPredictLogo from './MedPredictLogo';
+import MbereMedLogo from './MbereMedLogo';
 import { useAuth } from '../context/AuthContext';
 
 const navPatient = [
   { to: '/dashboard/patient', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/predict/heart', icon: Activity, label: 'New Prediction' },
   { to: '/history', icon: History, label: 'History' },
-  { to: '/how-it-works', icon: HelpCircle, label: 'How MedPredict Works' },
+  { to: '/how-it-works', icon: HelpCircle, label: 'How MbereMed Works' },
 ];
 
 const navProvider = [
   { to: '/dashboard/provider', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/how-it-works', icon: HelpCircle, label: 'How MedPredict Works' },
+  { to: '/how-it-works', icon: HelpCircle, label: 'How MbereMed Works' },
 ];
 
 const navAdmin = [
   { to: '/admin-dashboard', icon: LayoutDashboard, label: 'Admin Dashboard' },
-  { to: '/how-it-works', icon: HelpCircle, label: 'How MedPredict Works' },
+  { to: '/how-it-works', icon: HelpCircle, label: 'How MbereMed Works' },
 ];
 
 export default function TopNav() {
@@ -25,7 +25,7 @@ export default function TopNav() {
   const navigate = useNavigate();
   const isPatient = user?.role === 'patient';
   const isAdmin = user?.role === 'admin';
-  const nav = user ? (isAdmin ? navAdmin : isPatient ? navPatient : navProvider) : [{ to: '/how-it-works', icon: HelpCircle, label: 'How MedPredict Works' }];
+  const nav = user ? (isAdmin ? navAdmin : isPatient ? navPatient : navProvider) : [{ to: '/how-it-works', icon: HelpCircle, label: 'How MbereMed Works' }];
 
   const handleLogout = async () => {
     await logout();
@@ -36,8 +36,8 @@ export default function TopNav() {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-nav">
       <div className="flex items-center justify-between h-14 px-4 max-w-7xl mx-auto">
         <NavLink to={user ? (isAdmin ? '/admin-dashboard' : isPatient ? '/dashboard/patient' : '/dashboard/provider') : '/how-it-works'} className="flex items-center gap-2 shrink-0">
-          <MedPredictLogo className="w-9 h-9" />
-          <span className="font-heading font-bold text-content">MedPredict</span>
+          <MbereMedLogo className="w-9 h-9" />
+          <span className="font-heading font-bold text-content">MbereMed</span>
         </NavLink>
 
         <nav className="flex items-center gap-1">

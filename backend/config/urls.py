@@ -9,7 +9,7 @@ from django.urls import path, include
 def api_root(request):
     """Root URL: confirm backend is up and list API entry points for frontend."""
     return JsonResponse({
-        "name": "MedPredict API",
+        "name": "MbereMed API",
         "version": "1.0",
         "endpoints": {
             "admin": "/admin/",
@@ -22,6 +22,7 @@ def api_root(request):
             "predict": "/api/predict/<disease>/",
             "predictions": "/api/predictions/",
             "admin_stats": "/api/admin/stats/",
+            "admin_users": "/api/admin/users/",
         },
     })
 

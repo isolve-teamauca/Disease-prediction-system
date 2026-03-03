@@ -1,8 +1,8 @@
 /**
- * MedPredict logo: medical cross (+) with heart outline overlay.
+ * MbereMed logo: medical cross (+) with heart outline overlay.
  * Red (#B91C1C) by default; fits 40×40px container, scales via className.
  */
-export default function MedPredictLogo({ className = 'w-10 h-10', color = '#B91C1C' }) {
+export default function MbereMedLogo({ className = 'w-10 h-10', color = '#B91C1C' }) {
   return (
     <svg
       viewBox="0 0 40 40"

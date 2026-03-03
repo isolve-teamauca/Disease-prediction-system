@@ -201,7 +201,7 @@ export default function PredictPage() {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text('MedPredict — Disease Risk Report', margin, 18);
+    doc.text('MbereMed — Disease Risk Report', margin, 18);
 
     doc.setTextColor(...PDF_DARK);
     doc.setFont('helvetica', 'normal');
@@ -276,7 +276,7 @@ export default function PredictPage() {
     doc.text(footerLines, margin, footerY);
 
     const dateStr = new Date().toISOString().slice(0, 10);
-    const filename = `MedPredict_Report_${normalized}_${dateStr}.pdf`;
+    const filename = `MbereMed_Report_${normalized}_${dateStr}.pdf`;
     doc.save(filename);
     toast.success('Report downloaded');
   };

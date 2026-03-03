@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
-import MedPredictLogo from '../components/MedPredictLogo';
+import MbereMedLogo from '../components/MbereMedLogo';
 import RoleToggle from '../components/RoleToggle';
 import InputField from '../components/InputField';
 import { useAuth } from '../context/AuthContext';
@@ -40,8 +40,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-0">
         <div className="bg-white rounded-2xl shadow-card p-8 border border-gray-100">
           <div className="flex flex-col items-center text-center mb-6">
-            <MedPredictLogo className="w-16 h-16 mb-4" />
-            <h1 className="font-heading text-2xl font-bold text-content">Welcome to MedPredict</h1>
+            <MbereMedLogo className="w-16 h-16 mb-4" />
+            <h1 className="font-heading text-2xl font-bold text-content">Welcome to MbereMed</h1>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">

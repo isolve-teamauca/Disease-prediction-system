@@ -1,4 +1,4 @@
-# How to Run MedPredict (Disease Risk Prediction System)
+# How to Run MbereMed (Disease Risk Prediction System)
 
 ## Prerequisites
 

@@ -1,13 +1,19 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+import logging
+import traceback
 
 from .models import User
 from .serializers import UserSerializer, UserCreateSerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 @csrf_exempt
@@ -65,18 +71,28 @@ def register(request):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            # Create Patient profile when role is patient
-            if user.role == "patient":
-                from apps.patients.models import Patient
+            # Create Patient profile when role is patient, but don't crash registration if this fails
+            try:
+                if user.role == "patient":
+                    from apps.patients.models import Patient
 
-                Patient.objects.get_or_create(user=user)
+                    Patient.objects.get_or_create(user=user)
+            except Exception as e:
+                logging.getLogger(__name__).warning(
+                    "Could not create patient profile: %s", str(e)
+                )
+                # Don't crash — user was created successfully
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        # Duplicate username/email – return a clear 400 response
+        return Response(
+            {"detail": "A user with this email or username already exists."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     except Exception as e:
-        from django.db import IntegrityError
-        if isinstance(e, IntegrityError):
-            return Response(
-                {"detail": "A user with this email or username already exists."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        raise
+        logger.exception("Registration error: %s", str(e))
+        return Response(
+            {"error": str(e), "detail": traceback.format_exc()},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
