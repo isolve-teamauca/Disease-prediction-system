@@ -28,7 +28,8 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const { data } = await api.post('/api/auth/login/', { email, password });
-      setUser(data);
+      const userData = data?.user || data;
+      setUser(userData);
       return data;
     } finally {
       setLoading(false);

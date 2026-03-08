@@ -30,10 +30,15 @@ def login(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    # Allow login by email
+    # Allow login by email first
     user = User.objects.filter(email=username).first()
     if user:
         username = user.username
+    else:
+        # Then allow login by medical license for providers
+        user = User.objects.filter(medical_license=username, role="provider").first()
+        if user:
+            username = user.username
 
     user = authenticate(request, username=username, password=password)
     if user is None:

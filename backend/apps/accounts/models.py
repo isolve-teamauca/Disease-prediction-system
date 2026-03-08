@@ -28,6 +28,12 @@ class User(AbstractUser):
     # Provider-only (nullable for patients)
     specialization = models.CharField(max_length=100, blank=True)
     license_number = models.CharField(max_length=50, blank=True)
+    medical_license = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Provider medical license identifier (for provider login).",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

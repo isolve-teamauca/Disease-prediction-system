@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "specialization",
             "license_number",
+            "medical_license",
             "first_name",
             "last_name",
         )
@@ -40,6 +41,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "specialization",
             "license_number",
+            "medical_license",
         )
 
     def validate(self, data):
@@ -56,5 +58,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         # Ensure optional fields are None not empty string for DateField
         if validated_data.get("date_of_birth") == "":
             validated_data["date_of_birth"] = None
+        # Keep medical_license and license_number in sync so either can be used for login
+        license_number = validated_data.get("license_number") or None
+        medical_license = validated_data.get("medical_license") or None
+        if license_number and not medical_license:
+            validated_data["medical_license"] = license_number
+        elif medical_license and not license_number:
+            validated_data["license_number"] = medical_license
         user = User.objects.create_user(**validated_data)
         return user
