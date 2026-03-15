@@ -136,7 +136,10 @@ python manage.py shell -c "from apps.accounts.models import User; u = User.objec
 
 ## Deployment
 
-- **Backend (Render):** Use `build.sh` as build command (`pip install -r requirements.txt`, `collectstatic`, `migrate`). Start command: `gunicorn config.wsgi:application`. Set root directory to `backend` and add the env vars above.
+- **Backend (Render):**
+  - **Build command:** `./build.sh` (or `bash build.sh`). Root directory: `backend`.
+  - **Start command:** `./start.sh` (or `bash start.sh`). This runs `migrate` against the production PostgreSQL (Render sets `DATABASE_URL` only at runtime, so migrations in the build would not create tables in the real DB), then starts Gunicorn.
+  - Add env vars: `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS`, `DATABASE_URL` (auto on Render PostgreSQL), `CORS_ALLOWED_ORIGINS`.
 - **Frontend (Vercel):** Root directory `frontend`; set `VITE_API_URL` to your backend URL. Build/output use default Vite `dist`.
 
 ---

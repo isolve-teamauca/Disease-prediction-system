@@ -2,12 +2,13 @@
 Django settings for Disease Risk Prediction System.
 Uses environment variables (load from .env via python-dotenv).
 """
+from pathlib import Path
 import os
 import dj_database_url
-from pathlib import Path
 
 from dotenv import load_dotenv
 
+# This must be called before any os.environ.get()
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,9 +16,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------------------------------------------------------
 # Security & Debug
 # -----------------------------------------------------------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-fallback-key")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or os.environ.get(
+    "SECRET_KEY", "dev-fallback-key-change-me"
+)
+DEBUG = os.environ.get("DJANGO_DEBUG", os.environ.get("DEBUG", "False")) == "True"
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS",
+    os.environ.get("ALLOWED_HOSTS", "localhost"),
+).split(",")
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS",
     "http://localhost:3000,http://127.0.0.1:3000",
@@ -118,6 +124,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # -----------------------------------------------------------------------------
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
@@ -126,11 +133,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
 }
-
 CORS_ALLOW_CREDENTIALS = True
 
 # -----------------------------------------------------------------------------
-# Database (DATABASE_URL for Render/Heroku; default SQLite for local)
+# Database (supports DATABASE_URL and legacy POSTGRES_* vars)
 # -----------------------------------------------------------------------------
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -139,13 +145,22 @@ if DATABASE_URL:
         "default": dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
-            ssl_require=True,
         )
     }
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB", "disease_prediction_db"),
+            "USER": os.environ.get("POSTGRES_USER", "postgres"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
         }
     }
+from datetime import timedelta
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
