@@ -22,7 +22,11 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or os.environ.get(
 DEBUG = os.environ.get("DJANGO_DEBUG", os.environ.get("DEBUG", "False")) == "True"
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
+<<<<<<< HEAD
     os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"),
+=======
+    os.environ.get("ALLOWED_HOSTS", "localhost"),
+>>>>>>> e406739903627c5669dfbbecbb9c32a1cd899af7
 ).split(",")
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS",

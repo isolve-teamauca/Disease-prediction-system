@@ -65,36 +65,6 @@ function getPasswordChecks(password) {
   return { label, color, lengthOk, hasUpper, hasNumber, hasSpecial };
 }
 
-function DarkInput({ label, icon: Icon, error, value, onChange, ...props }) {
-  return (
-    <div>
-      {label && (
-        <label className="block text-xs uppercase tracking-wider mb-2" style={{ color: '#999' }}>
-          {label}
-        </label>
-      )}
-      <div className="relative">
-        {Icon && (
-          <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 z-10" style={{ color: '#666' }} />
-        )}
-        <input
-          className="placeholder:opacity-70"
-          style={{ ...inputStyle, ...(Icon ? { paddingLeft: 44 } : {}) }}
-          value={value ?? ''}
-          onChange={onChange}
-          onFocus={(e) => Object.assign(e.target.style, inputFocusStyle)}
-          onBlur={(e) => {
-            e.target.style.borderColor = '';
-            e.target.style.boxShadow = '';
-          }}
-          {...props}
-        />
-      </div>
-      {error && <p className="text-sm text-red-400 mt-1">{error}</p>}
-    </div>
-  );
-}
-
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
   const [role, setRole] = useState('patient');
@@ -178,6 +148,32 @@ export default function RegisterPage() {
   };
 
   const stepLabels = ['Account Type', 'Contact Details', 'Security'];
+
+  const DarkInput = ({ label, icon: Icon, error, ...props }) => (
+    <div>
+      {label && (
+        <label className="block text-xs uppercase tracking-wider mb-2" style={{ color: '#999' }}>
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        {Icon && (
+          <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 z-10" style={{ color: '#666' }} />
+        )}
+        <input
+          className="placeholder:opacity-70"
+          style={{ ...inputStyle, ...(Icon ? { paddingLeft: 44 } : {}) }}
+          onFocus={(e) => Object.assign(e.target.style, inputFocusStyle)}
+          onBlur={(e) => {
+            e.target.style.borderColor = '';
+            e.target.style.boxShadow = '';
+          }}
+          {...props}
+        />
+      </div>
+      {error && <p className="text-sm text-red-400 mt-1">{error}</p>}
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex bg-[#0D0A0A]" style={{ minHeight: '100vh' }}>
