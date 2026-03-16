@@ -96,7 +96,7 @@ const DarkInput = memo(function DarkInput({ label, icon: Icon, error, ...props }
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
   const [role, setRole] = useState('patient');
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     full_name: '',
     username: '',
     phone: '',
@@ -115,23 +115,22 @@ export default function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const update = (key, value) => setForm((f) => ({ ...f, [key]: value }));
-  const passwordChecks = useMemo(() => getPasswordChecks(form.password || ''), [form.password]);
+  const passwordChecks = useMemo(() => getPasswordChecks(formData.password || ''), [formData.password]);
 
   const validateStep = (currentStep) => {
     const e = {};
     if (currentStep === 1) {
-      if (!form.full_name?.trim()) e.full_name = 'Required.';
-      if (!form.username?.trim()) e.username = 'Required.';
+      if (!formData.full_name?.trim()) e.full_name = 'Required.';
+      if (!formData.username?.trim()) e.username = 'Required.';
     } else if (currentStep === 2) {
       if (!phoneNumber.trim()) e.phone = 'Phone number is required.';
-      if (!form.email?.trim()) e.email = 'Required.';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email.';
-      if (role === 'provider' && !form.license_number?.trim()) e.license_number = 'Medical license is required.';
+      if (!formData.email?.trim()) e.email = 'Required.';
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) e.email = 'Invalid email.';
+      if (role === 'provider' && !formData.license_number?.trim()) e.license_number = 'Medical license is required.';
     } else if (currentStep === 3) {
-      if (!form.password) e.password = 'Required.';
+      if (!formData.password) e.password = 'Required.';
       else if (!passwordChecks.lengthOk) e.password = 'At least 8 characters.';
-      if (form.password !== form.confirm_password) e.confirm_password = 'Passwords do not match.';
+      if (formData.password !== formData.confirm_password) e.confirm_password = 'Passwords do not match.';
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -139,7 +138,7 @@ export default function RegisterPage() {
 
   const handleNext = () => {
     if (!validateStep(step)) return;
-    if (step === 2) setForm((f) => ({ ...f, phone: phoneNumber ? `${phoneCountry}${phoneNumber.replace(/\s+/g, '')}` : '' }));
+    if (step === 2) setFormData((prev) => ({ ...prev, phone: phoneNumber ? `${phoneCountry}${phoneNumber.replace(/\s+/g, '')}` : '' }));
     setStep((s) => Math.min(3, s + 1));
   };
 
@@ -156,7 +155,7 @@ export default function RegisterPage() {
     }
     setSubmitting(true);
     const combinedPhone = phoneNumber ? `${phoneCountry}${phoneNumber.replace(/\s+/g, '')}` : '';
-    const payloadForm = { ...form, phone: combinedPhone };
+    const payloadForm = { ...formData, phone: combinedPhone };
     try {
       await register(payloadForm, role);
       setToastState({ type: 'success', message: 'Account created successfully! Welcome to MbereMed 🎉' });
@@ -258,8 +257,22 @@ export default function RegisterPage() {
                   </button>
                 </div>
               </div>
-              <DarkInput label="Full Name" icon={User} placeholder="e.g. John Doe" value={form.full_name} onChange={(e) => update('full_name', e.target.value)} error={errors.full_name} />
-              <DarkInput label="Username" icon={User} placeholder="e.g. johndoe123" value={form.username} onChange={(e) => update('username', e.target.value)} error={errors.username} />
+              <DarkInput
+                label="Full Name"
+                icon={User}
+                placeholder="e.g. John Doe"
+                value={formData.full_name}
+                onChange={(e) => setFormData((prev) => ({ ...prev, full_name: e.target.value }))}
+                error={errors.full_name}
+              />
+              <DarkInput
+                label="Username"
+                icon={User}
+                placeholder="e.g. johndoe123"
+                value={formData.username}
+                onChange={(e) => setFormData((prev) => ({ ...prev, username: e.target.value }))}
+                error={errors.username}
+              />
               <div className="flex justify-end pt-2">
                 <button
                   type="button"
@@ -305,12 +318,34 @@ export default function RegisterPage() {
                 </div>
                 {errors.phone && <p className="text-sm text-red-400 mt-1">{errors.phone}</p>}
               </div>
-              <DarkInput label="Email" icon={Mail} type="email" placeholder="e.g. john@example.com" value={form.email} onChange={(e) => update('email', e.target.value)} error={errors.email} />
+              <DarkInput
+                label="Email"
+                icon={Mail}
+                type="email"
+                placeholder="e.g. john@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                error={errors.email}
+              />
               {role === 'provider' && (
-                <DarkInput label="Medical License Number" icon={BadgeCheck} placeholder="e.g. MD-2024-001" value={form.license_number} onChange={(e) => update('license_number', e.target.value)} error={errors.license_number} />
+                <DarkInput
+                  label="Medical License Number"
+                  icon={BadgeCheck}
+                  placeholder="e.g. MD-2024-001"
+                  value={formData.license_number}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, license_number: e.target.value }))}
+                  error={errors.license_number}
+                />
               )}
               {role === 'patient' && (
-                <DarkInput label="Date of Birth" icon={Calendar} type="date" value={form.date_of_birth} onChange={(e) => update('date_of_birth', e.target.value)} error={errors.date_of_birth} />
+                <DarkInput
+                  label="Date of Birth"
+                  icon={Calendar}
+                  type="date"
+                  value={formData.date_of_birth}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, date_of_birth: e.target.value }))}
+                  error={errors.date_of_birth}
+                />
               )}
               <div className="flex justify-between pt-2">
                 <button type="button" onClick={handleBack} className="px-4 py-2.5 rounded-xl border border-white/20 text-gray-300 hover:bg-white/5 transition-colors">
@@ -325,12 +360,28 @@ export default function RegisterPage() {
 
           {step === 3 && (
             <form onSubmit={handleSubmit} className="space-y-5">
-              <DarkInput label="Password" icon={Lock} type="password" placeholder="Create a strong password" value={form.password} onChange={(e) => update('password', e.target.value)} error={errors.password} />
+              <DarkInput
+                label="Password"
+                icon={Lock}
+                type="password"
+                placeholder="Create a strong password"
+                value={formData.password}
+                onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+                error={errors.password}
+              />
               <div className="flex items-center justify-between text-xs">
                 <span style={{ color: '#888' }}>Password strength:</span>
                 <span className={`font-semibold ${passwordChecks.color}`}>{passwordChecks.label}</span>
               </div>
-              <DarkInput label="Confirm Password" icon={Lock} type="password" placeholder="Re-enter your password" value={form.confirm_password} onChange={(e) => update('confirm_password', e.target.value)} error={errors.confirm_password} />
+              <DarkInput
+                label="Confirm Password"
+                icon={Lock}
+                type="password"
+                placeholder="Re-enter your password"
+                value={formData.confirm_password}
+                onChange={(e) => setFormData((prev) => ({ ...prev, confirm_password: e.target.value }))}
+                error={errors.confirm_password}
+              />
               <div className="text-xs space-y-1">
                 <p style={{ color: '#888' }}>Your password should include:</p>
                 <p className={passwordChecks.lengthOk ? 'text-green-400' : 'text-gray-500'}>✓ At least 8 characters</p>
