@@ -1,0 +1,110 @@
+from django.contrib.auth import authenticate
+from django.db import IntegrityError
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+import logging
+import traceback
+
+from .models import User
+from .serializers import UserSerializer, UserCreateSerializer
+
+
+logger = logging.getLogger(__name__)
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login(request):
+    from rest_framework_simplejwt.tokens import RefreshToken
+
+    username = request.data.get("username") or request.data.get("email")
+    password = request.data.get("password")
+
+    if not username or not password:
+        return Response(
+            {"detail": "Username/email and password required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    # Allow login by email first
+    user = User.objects.filter(email=username).first()
+    if user:
+        username = user.username
+    else:
+        # Then allow login by medical license for providers
+        user = User.objects.filter(medical_license=username, role="provider").first()
+        if user:
+            username = user.username
+
+    user = authenticate(request, username=username, password=password)
+    if user is None:
+        return Response(
+            {"detail": "Invalid credentials."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
+    refresh = RefreshToken.for_user(user)
+    return Response(
+        {
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": UserSerializer(user).data,
+        }
+    )
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    """Session logout."""
+    from django.contrib.auth import logout as auth_logout
+    auth_logout(request)
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def current_user(request):
+    """Return the currently authenticated user."""
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def register(request):
+    """Register a new user (patient or provider)."""
+    try:
+        serializer = UserCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            # Create Patient profile when role is patient, but don't crash registration if this fails
+            try:
+                if user.role == "patient":
+                    from apps.patients.models import Patient
+
+                    Patient.objects.get_or_create(user=user)
+            except Exception as e:
+                logging.getLogger(__name__).warning(
+                    "Could not create patient profile: %s", str(e)
+                )
+                # Don't crash — user was created successfully
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        # Duplicate username/email – return a clear 400 response
+        return Response(
+            {"detail": "A user with this email or username already exists."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    except Exception as e:
+        logger.exception("Registration error: %s", str(e))
+        return Response(
+            {"error": str(e), "detail": traceback.format_exc()},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

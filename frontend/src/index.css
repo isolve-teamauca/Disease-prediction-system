@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #FFFFFF;
+  position: relative;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.toast-slide-in {
+  animation: toast-slide-in 0.3s ease-out;
+}
+
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Auth split layout */
+.auth-card-enter {
+  animation: auth-card-enter 0.5s ease-out forwards;
+}
+
+@keyframes auth-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heart-pulse {
+  animation: heart-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.ecg-line {
+  stroke-dasharray: 200;
+  animation: ecg-dash 2s linear infinite;
+}
+
+@keyframes ecg-dash {
+  to { stroke-dashoffset: -400; }
+}
+
+.auth-step-pulse {
+  animation: auth-step-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes auth-step-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(111,29,27,0.5); }
+  50% { box-shadow: 0 0 14px 4px rgba(111,29,27,0.8); }
+}
+
