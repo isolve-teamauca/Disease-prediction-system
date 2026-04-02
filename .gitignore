@@ -1,22 +1,38 @@
-# Node
-node_modules/
-npm-debug.log
-yarn-error.log
-
 # Python
 __pycache__/
-*.pyc
-db.sqlite3
+*.py[cod]
+*.pyo
+*.pyd
+.Python
 
-# Environment
-.env
+# Virtual environments
+.venv/
 venv/
-.env.local
+env/
 
-# Build
-dist/
-build/
+# Django
+*.sqlite3
+*.log
+staticfiles/
+media/
 
-# OS
-.DS_Store
-Thumbs.db
+# Environment files - NEVER commit these
+backend/.env
+frontend/.env
+
+# But DO allow .env.example files
+!backend/.env.example
+!frontend/.env.example
+
+# ML models - DO commit these (needed for deployment)
+# (no *.pkl line here — we WANT them tracked)
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.cache/
+
+# IDE
+.cursor/
+.vscode/settings.json
+*.DS_Store
